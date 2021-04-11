@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form class="d-flex" action="{% url 'mystocks' %}" method="POST">
+    {% csrf_token %}
+  <input class="form-control me-2" type="search" placeholder="Stock Ticker" aria-label="Search"
+  name="ticker">
+  <button class="btn btn-outline-success" type="submit">Add</button>
+</form>
+
+<hr class="text-success">
+<h4 class="text-success text-center"><i><strong>MY PORTFOLIO</strong></i></h4>
+<hr class="text-success">
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-success">
+    <tr>
+      <th scope="col">Company</th>
+      <th scope="col">Ticker</th>
+      <th scope="col">Price</th>
+      <th scope="col">Market Cap</th>
+      <th scope="col">%</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% if ticker %}
+        {% for stock in output %}    
+            <tr>          
+              <th scope="row"> {{ stock.companyName }}</th>
+              <td> {{ stock.symbol }} </td>
+              <td> ${{ stock.latestPrice }} </td>
+              <td> ${{ stock.marketCap }} </td>
+              <td> {{ stock.changePercent }}% </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+
+  </tbody>
+</table>
+
+{% endblock %}

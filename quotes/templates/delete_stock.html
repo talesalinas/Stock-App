@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1><i>Delete Stock</i></h1>
+<br>
+{% if ticker %}
+    <div class="d-flex justify-content-around">
+    {% for item in ticker %}
+        <a href="{% url 'delete' item.id %}" class="btn btn-danger">Delete - {{ item }}</a> 
+    {% endfor %}
+    </div>
+{% else %}
+    You don't have any stocks ....
+{% endif %}
+
+{% endblock %}

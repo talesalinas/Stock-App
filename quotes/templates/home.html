@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if ticker %}
+    {{ ticker }}
+{% endif %}
+
+{% if api and api_company and api_news %}
+    {% if api == "Error..." or api_company == "Error..." or api_news == "Error..." %}
+        There was a problem with your ticker symbol, please try again ....
+    {% else %}
+
+        <h2>{{ api.companyName }} ({{api.symbol}})</h2>
+        <hr>
+        <strong>Market:</strong> {{ api.primaryExchange }} <br>
+        <strong>Market Cap:</strong> {{ api.marketCap }} <br>
+        <strong>Sector:</strong> {{ api_company.sector }} <br>
+        <strong>Industry:</strong> {{ api_company.industry }} <br><br>
+        <p style="color:rgb(2, 155, 78);">
+            <strong><i>DESCRIPTION</i></strong> <br>
+            {{ api_company.description }} 
+        </p>
+        <strong>CEO:</strong> {{ api_company.CEO }} <br>
+        <strong>Number of Employees:</strong>{{ api_company.employees }}<br>
+        <strong>Latest Price:</strong> U${{ api.latestPrice }} <br>
+        <strong>Previous Close:</strong>U${{api.previousClose}}<br>
+        <strong>Price Change (Day):</strong> U${{ api.change }} <br>
+        <strong>Price Change % (Day):</strong> {{ api.changePercent }}% <br>
+        <strong>P/E Ratio:</strong> {{ api.peRatio }} <br>
+        <strong>High (52 weeks):</strong> U${{ api.week52High }} <br>
+        <strong>Low (52 weeks):</strong> U${{ api.week52Low }} <hr>
+
+        <h3 style="color:rgb(243, 160, 6);"><i>Latest News</i></h3>
+        {% for new in api_news %}
+            {% for key, value in new.items %}
+                {% if key == "headline" %}
+                    <p style="color:crimson;">
+                        <strong><i>{{ value }}</i></strong>
+                    </p>    
+                {% elif key == "source" or key == "summary" or key == "url" %}
+                    <strong><i>{{ key }}:</i></strong> {{ value }}<br>
+                {% endif %}
+            {% endfor %}<hr>
+        {% endfor %}
+
+    {% endif %}
+{% endif %}
+
+{% endblock %}
